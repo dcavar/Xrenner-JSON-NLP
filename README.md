@@ -2,7 +2,7 @@
 
 # NLTK-JSON-NLP
 
-(C) 2019 by [Damir Cavar], Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili
+(C) 2019 by [Damir Cavar], Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang
 
 Brought to you by the [NLP-Lab.org]!
 
