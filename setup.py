@@ -16,11 +16,17 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'xrenner>=2.0.2.0',
-        'pyjsonnlp>=0.2.1'
+        'pyjsonnlp>=0.2.4',
+        'beautifulsoup4>=4.6.3',
+        'nltk>=3.4',
+        'python-dotenv>=0.10.1'
     ],
+    setup_requires=["pytest-runner"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
+    test_suite="tests",
+    tests_require=["pytest", "coverage"]
 )

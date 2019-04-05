@@ -11,6 +11,14 @@ Brought to you by the [NLP-Lab.org]!
 
 [Xrenner] wrapper for [JSON-NLP].
 
+## Docker CoreNLP
+
+`docker pull nlpbox/corenlp`
+`docker run -p 9000:9000 -ti nlpbox/corenlp`
+
+To test, open a new tab and
+
+`wget -q --post-data "Although they didn't like it, they accepted the offer."   'localhost:9000/?properties={"annotators":"depparse","outputFormat":"conll"}' -O /dev/stdout`
 
 
 

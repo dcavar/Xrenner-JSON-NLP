@@ -1,0 +1,2 @@
+# create a file named .env that has these values
+CORENLP_SERVER=http://localhost/corenlp?nlpoutput=dp&format=conll
