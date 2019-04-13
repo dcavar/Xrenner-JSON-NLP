@@ -89,48 +89,49 @@ class XrennerPipeline(Pipeline):
         d['meta']['DC.source'] = 'Xrenner 2.0'
         d['text'] = text
 
-        # wrap tokens with their token id so that xml parsing works
-        token_num = 1
-        tokenized = []
-        for line in sgml_result.split('\n'):
-            if line[0:9] != '<referent' and line[0:10] != '</referent':
-                line = f'<token id="{token_num}">{line}</token>'
-                token_num += 1
-            tokenized.append(line)
+        if coreferences:
+            # wrap tokens with their token id so that xml parsing works
+            token_num = 1
+            tokenized = []
+            for line in sgml_result.split('\n'):
+                if line[0:9] != '<referent' and line[0:10] != '</referent':
+                    line = f'<token id="{token_num}">{line}</token>'
+                    token_num += 1
+                tokenized.append(line)
 
-        representatives = {}
-        coref_id = 0
-        soup = BeautifulSoup('\n'.join(tokenized), 'html.parser')
-        for tag in soup.find_all('referent'):
-            # new representative
-            if 'antecedent' not in tag.attrs or tag['type'] == 'none':
-                r = build_coreference(coref_id)
-                coref_id += 1
-                r['representative'] = {
-                    'entity': tag['entity'],
-                    'tokens': [int(t['id']) for t in tag.find_all('token')]
-                }
-                r['representative']['head'] = find_head(d, r['representative']['tokens'])
-                representatives[(tag['id'], tag['group'])] = r
-                d['coreferences'].append(r)
+            representatives = {}
+            coref_id = 0
+            soup = BeautifulSoup('\n'.join(tokenized), 'html.parser')
+            for tag in soup.find_all('referent'):
+                # new representative
+                if 'antecedent' not in tag.attrs or tag['type'] == 'none':
+                    r = build_coreference(coref_id)
+                    coref_id += 1
+                    r['representative'] = {
+                        'entity': tag['entity'],
+                        'tokens': [int(t['id']) for t in tag.find_all('token')]
+                    }
+                    r['representative']['head'] = find_head(d, r['representative']['tokens'])
+                    representatives[(tag['id'], tag['group'])] = r
+                    d['coreferences'].append(r)
 
-                # might be a multi-word expression too!
-                if expressions and tag['entity'] != 'event' and len(r['representative']['tokens']) > 1:
-                    d['expressions'].append({
-                        # deduce the phrase type by the pos tag of the head token
-                        'type': 'VP' if 'V' in d['tokenList'][r['representative']['head']]['upos'] else 'NP',
-                        'head': r['representative']['head'],
-                        'tokens': r['representative']['tokens']
+                    # might be a multi-word expression too!
+                    if expressions and tag['entity'] != 'event' and len(r['representative']['tokens']) > 1:
+                        d['expressions'].append({
+                            # deduce the phrase type by the pos tag of the head token
+                            'type': 'VP' if 'V' in d['tokenList'][r['representative']['head']]['upos'] else 'NP',
+                            'head': r['representative']['head'],
+                            'tokens': r['representative']['tokens']
+                        })
+                # new referent
+                else:
+                    r = representatives[(tag['antecedent'], tag['group'])]
+                    ids = [int(t['id']) for t in tag.find_all('token')]
+                    r['referents'].append({
+                        'type': tag['type'],
+                        'tokens': ids,
+                        'head': find_head(d, ids)
                     })
-            # new referent
-            else:
-                r = representatives[(tag['antecedent'], tag['group'])]
-                ids = [int(t['id']) for t in tag.find_all('token')]
-                r['referents'].append({
-                    'type': tag['type'],
-                    'tokens': ids,
-                    'head': find_head(d, ids)
-                })
 
         return remove_empty_fields(j)
 
