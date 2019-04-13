@@ -1,8 +1,6 @@
 # Xrenner to JSON-NLP
 
-# NLTK-JSON-NLP
-
-(C) 2019 by [Damir Cavar], [Oren Baldinger], Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang
+(C) 2019 by [Damir Cavar], Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang
 
 Brought to you by the [NLP-Lab.org]!
 
@@ -55,8 +53,9 @@ Here is an example `GET` call:
 [Flair]: https://github.com/zalandoresearch/flair "Flair"
 [spaCy]: https://spacy.io/ "spaCy"
 [NLTK]: http://nltk.org/ "Natural Language Processing Toolkit"
-[Polyglot]: https://github.com/aboSamoor/polyglot "Polyglot" 
+[Polyglot]: https://github.com/aboSamoor/polyglot "Polyglot"
 [Xrenner]: https://github.com/amir-zeldes/xrenner "Xrenner"
 [CONLL-U]: https://universaldependencies.org/format.html "CONLL-U"
-[CoreNLP]: https://stanfordnlp.github.io/CoreNLP/ "Core-NLP"
 [Docker]: https://www.docker.com/ "Docker"
+[CoreNLP]: https://stanfordnlp.github.io/CoreNLP/ "Stanford CoreNLP"
+[Flask]: http://flask.pocoo.org/ "Flask"
