@@ -23,7 +23,7 @@ from nltk.parse.corenlp import CoreNLPDependencyParser
 from xrenner import Xrenner
 
 name = "xrennerjsonnlp"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __cache = defaultdict(dict)
 
 load_dotenv()
@@ -73,21 +73,16 @@ class XrennerPipeline(Pipeline):
     def __init__(self):
         self.corenlp = CoreNLP()
 
-    def process(self, text='', coreferences=False, constituents=False, dependencies=False, expressions=False,
-                lang='en') -> OrderedDict:
-
+    @staticmethod
+    def process_conll(conll='', lang='en', coreferences=True, expressions=True) -> OrderedDict:
         x = load_xrenner()
         x.load(XrennerPipeline.iso2xrenner(lang))
         x.set_doc_name('not-used')  # needs to be set or error
 
-        # do initial coreference parse
-        conll = self.corenlp.dep_parse(text)
         sgml_result = x.analyze(conll, 'sgml')
         j = parse_conllu(conll)
         d = list(j['documents'].values())[0]
-
         d['meta']['DC.source'] = 'Xrenner 2.0'
-        d['text'] = text
 
         if coreferences:
             # wrap tokens with their token id so that xml parsing works
@@ -134,6 +129,15 @@ class XrennerPipeline(Pipeline):
                     })
 
         return remove_empty_fields(j)
+
+    def process(self, text='', coreferences=True, constituents=False, dependencies=False, expressions=True,
+                lang='en') -> OrderedDict:
+        # do initial coreference parse
+        conll = self.corenlp.dep_parse(text)
+        j = self.process_conll(conll=conll, lang=lang, coreferences=coreferences, expressions=expressions)
+        d = list(j['documents'].values())[0]
+        d['text'] = text
+        return j
 
     @staticmethod
     def get_sentence_tokenizer():

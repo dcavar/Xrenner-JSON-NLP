@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="xrennerjsonnlp",
-    version="0.0.1",
+    version="0.0.2",
     author="Damir Cavar, Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang",
     author_email="damir@cavar.me",
     description="The Python Xrenner JSON-NLP package",
@@ -16,7 +16,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'xrenner>=2.0.2.0',
-        'pyjsonnlp>=0.2.4',
+        'pyjsonnlp>=0.2.6',
         'beautifulsoup4>=4.6.3',
         'nltk>=3.4',
         'python-dotenv>=0.10.1'
