@@ -23,7 +23,7 @@ from nltk.parse.corenlp import CoreNLPDependencyParser
 from xrenner import Xrenner
 
 name = "xrennerjsonnlp"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __cache = defaultdict(dict)
 
 load_dotenv()
@@ -74,7 +74,11 @@ class XrennerPipeline(Pipeline):
         self.corenlp = CoreNLP()
 
     @staticmethod
-    def process_conll(conll='', lang='en', coreferences=True, expressions=True) -> OrderedDict:
+    def process_conll(conll='', lang='en', coreferences=False, constituents=False, dependencies=False, expressions=False,
+                      **kwargs) -> OrderedDict:
+        if conll == '':
+            raise ValueError('You must pass something in the conll parameter!')
+
         x = load_xrenner()
         x.load(XrennerPipeline.iso2xrenner(lang))
         x.set_doc_name('not-used')  # needs to be set or error

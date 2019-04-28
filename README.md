@@ -10,9 +10,14 @@ Brought to you by the [NLP-Lab.org]!
 [Xrenner] wrapper for [JSON-NLP]. [Xrenner] specializes in coreference and anaphora resolution, in a more highly annotated manner 
 than just a coreference chain.
 
-## CoreNLP
+## Required Dependency Parse
 
-Xrenner requires a [Dependency Parse](https://en.wikipedia.org/wiki/Dependency_grammar) from [CoreNLP].
+Xrenner requires a [Dependency Parse](https://en.wikipedia.org/wiki/Dependency_grammar) in [CoNLL-U] format. 
+This can come from [CoreNLP], or another parser that provides universal dependencies in [CoNNL-U] format.
+There are two ways to accomplish this:
+
+### CoreNLP Server
+
 The `XrennerPipeline` class will take care of the details, however it requires an available [CoreNLP] server.
 The easiest way to create one is with [Docker]:
 
@@ -27,6 +32,15 @@ You then need to create a `.env` file in the root of the project, follow the exa
 The default entry that corresponds to the [Docker] command above is: 
 
     CORENLP_SERVER=http://localhost:9000
+    
+### Provide your own CoNLL-U
+
+Use the `XrennerPipeline.process_conll` function, with your conll data passed as a string via
+the `conll` argument.
+
+You may find the `pyjsonnlp.conversion.to_conllu` function helpful for converting [JSON-NLP],
+maybe from [spaCy], to [CoNLL-U].
+
     
 ## Microservice
 
@@ -43,6 +57,10 @@ Text is provided to the microservice with the `text` parameter, via either `GET`
 Here is an example `GET` call:
 
     http://localhost:5000?text=John went to the store. He bought some milk.
+    
+The `process_conll` endpoint mentioned above is available at the `/process_conll`
+URI. Instead of passing `text`, pass `conll`. A POST operation will be easier than GET 
+in this situation.
 
 
 
