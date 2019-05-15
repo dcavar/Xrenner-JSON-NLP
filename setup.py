@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="xrennerjsonnlp",
-    version="0.0.3",
+    version="0.0.4",
     author="Damir Cavar, Oren Baldinger, Maanvitha Gongalla, Anurag Kumar, Murali Kammili, Boli Fang",
     author_email="damir@cavar.me",
     description="The Python Xrenner JSON-NLP package",

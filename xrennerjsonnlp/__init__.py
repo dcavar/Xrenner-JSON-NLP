@@ -23,7 +23,7 @@ from nltk.parse.corenlp import CoreNLPDependencyParser
 from xrenner import Xrenner
 
 name = "xrennerjsonnlp"
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 __cache = defaultdict(dict)
 
 load_dotenv()
