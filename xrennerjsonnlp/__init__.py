@@ -23,7 +23,7 @@ from nltk.parse.corenlp import CoreNLPDependencyParser
 from xrenner import Xrenner
 
 name = "xrennerjsonnlp"
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 __cache = defaultdict(dict)
 
 load_dotenv()
@@ -85,7 +85,8 @@ class XrennerPipeline(Pipeline):
 
         sgml_result = x.analyze(conll, 'sgml')
         j = parse_conllu(conll)
-        d = list(j['documents'].values())[0]
+        #d = list(j['documents'].values())[0]
+        d = j['documents'][0]
         d['meta']['DC.source'] = 'Xrenner 2.0'
 
         if coreferences:
@@ -139,7 +140,8 @@ class XrennerPipeline(Pipeline):
         # do initial coreference parse
         conll = self.corenlp.dep_parse(text)
         j = self.process_conll(conll=conll, lang=lang, coreferences=coreferences, expressions=expressions)
-        d = list(j['documents'].values())[0]
+        #d = list(j['documents'].values())[0]
+        d = j['documents'][0]
         d['text'] = text
         return j
 
